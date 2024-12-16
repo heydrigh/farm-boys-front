@@ -3,10 +3,12 @@
 import Input from '@/components/Input'
 import MaskedInput from '@/components/InputMasked'
 import CheckboxGroup from '@/components/CheckboxGroup'
+import Select from '@/components/Select'
 import { useState } from 'react'
 
 export default function NewFarmer() {
 	const [value, setValue] = useState('')
+	const [selectedState, setSelectedState] = useState('')
 	const [selectedCrops, setSelectedCrops] = useState<string[]>([])
 	const [error, setError] = useState<string | undefined>()
 
@@ -16,29 +18,28 @@ export default function NewFarmer() {
 	}
 
 	const cpfCnpjMask = [
-		{
-			mask: '000.000.000-00',
-			maxLength: 11,
-		},
-		{
-			mask: '00.000.000/0000-00',
-		},
+		{ mask: '000.000.000-00', maxLength: 11 }, // CPF
+		{ mask: '00.000.000/0000-00' }, // CNPJ
 	]
 
 	const cropOptions = [
 		{ label: 'Soja', value: 'soja' },
 		{ label: 'Milho', value: 'milho' },
 		{ label: 'Algodão', value: 'algodao' },
-		{ label: 'Café', value: 'cafe' },
-		{ label: 'Cana de Açúcar', value: 'cana' },
+	]
+
+	const stateOptions = [
+		{ label: 'São Paulo', value: 'SP' },
+		{ label: 'Minas Gerais', value: 'MG' },
+		{ label: 'Paraná', value: 'PR' },
 	]
 
 	const handleSubmit = () => {
-		if (selectedCrops.length === 0) {
-			setError('Selecione pelo menos uma cultura.')
+		if (!selectedState) {
+			setError('Selecione um estado.')
 		} else {
 			setError(undefined)
-			console.log('Selected Crops:', selectedCrops)
+			console.log('Form Submitted:', { value, selectedState, selectedCrops })
 		}
 	}
 
@@ -51,17 +52,23 @@ export default function NewFarmer() {
 					name='cpfCnpj'
 					label='CPF ou CNPJ'
 					mask={cpfCnpjMask}
-					radix='.'
 					value={value}
 					onAccept={handleAccept}
 					placeholder='Digite o CPF ou CNPJ'
+				/>
+				<Select
+					name='state'
+					label='Estado'
+					options={stateOptions}
+					value={selectedState}
+					onChange={(e) => setSelectedState(e.target.value)}
+					error={error}
 				/>
 				<CheckboxGroup
 					label='Culturas Plantadas'
 					options={cropOptions}
 					selectedValues={selectedCrops}
 					onChange={setSelectedCrops}
-					error={error}
 				/>
 				<button
 					type='button'

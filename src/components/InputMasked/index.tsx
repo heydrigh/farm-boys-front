@@ -9,7 +9,7 @@ const MaskedInput = ({ name, label, error, onAccept, ...rest }: MaskedInputProps
 	const inputRef = useRef<HTMLInputElement>(null)
 
 	return (
-		<div className='mb-4'>
+		<div className=''>
 			{label && (
 				<label
 					htmlFor={name}
