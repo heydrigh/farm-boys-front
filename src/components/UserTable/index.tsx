@@ -32,9 +32,9 @@ const UserTable = ({ data, actions }: UserTableProps) => {
 							className='hover:bg-gray-50 dark:hover:bg-gray-600 transition-all duration-150'
 						>
 							<td className='px-6 py-4 text-gray-800 dark:text-gray-300'>{user.name}</td>
-							<td className='px-6 py-4 text-gray-800 dark:text-gray-300'>{user.farm}</td>
-							<td className='px-6 py-4 text-gray-800 dark:text-gray-300'>{user.city}</td>
-							<td className='px-6 py-4 text-gray-800 dark:text-gray-300'>{user.state}</td>
+							<td className='px-6 py-4 text-gray-800 dark:text-gray-300'>{user.farm.name}</td>
+							<td className='px-6 py-4 text-gray-800 dark:text-gray-300'>{user.farm.city}</td>
+							<td className='px-6 py-4 text-gray-800 dark:text-gray-300'>{user.farm.state}</td>
 							{actions && (
 								<td className='px-6 py-4 flex justify-center gap-4'>
 									{actions.map((action, index) => (

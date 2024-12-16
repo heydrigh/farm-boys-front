@@ -9,3 +9,7 @@ export const DASHBOARD_QUERY_KEY = {
 }
 
 export const CROPS_QUERY_KEY = ['crops']
+
+export const PRODUCERS_QUERY_KEY = ['producers']
+
+export const PRODUCER_QUERY_KEY = 'producer'

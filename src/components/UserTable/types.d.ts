@@ -1,10 +1,4 @@
-export interface User {
-	id: number
-	name: string
-	farm: string
-	city: string
-	state: string
-}
+import { Producer } from '@/generated'
 
 export interface TableAction {
 	icon: React.ComponentType<{ size?: number }>
@@ -12,6 +6,6 @@ export interface TableAction {
 }
 
 export interface UserTableProps {
-	data: User[]
+	data: Producer[]
 	actions?: TableAction[]
 }
