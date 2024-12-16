@@ -1,79 +1,148 @@
 'use client'
 
-import Input from '@/components/Input'
+import { useForm, Controller } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import MaskedInput from '@/components/InputMasked'
+import Input from '@/components/Input'
 import CheckboxGroup from '@/components/CheckboxGroup'
 import Select from '@/components/Select'
-import { useState } from 'react'
+import { FarmerFormValues, farmerSchema } from '@/schemas/FarmerSchema'
+import { brazilianStates, cpfCnpjMasks } from './constants'
 
 export default function NewFarmer() {
-	const [value, setValue] = useState('')
-	const [selectedState, setSelectedState] = useState('')
-	const [selectedCrops, setSelectedCrops] = useState<string[]>([])
-	const [error, setError] = useState<string | undefined>()
+	const {
+		control,
+		handleSubmit,
+		register,
+		formState: { errors },
+	} = useForm<FarmerFormValues>({
+		resolver: zodResolver(farmerSchema),
+		defaultValues: {
+			cpfCnpj: '',
+			farmerName: '',
+			farmName: '',
+			city: '',
+			state: '',
+			totalArea: 0,
+			arableArea: 0,
+			vegetationArea: 0,
+			crops: [],
+		},
+	})
 
-	const handleAccept = (val: string) => {
-		setValue(val)
-		console.log('Unmasked value:', val)
-	}
-
-	const cpfCnpjMask = [
-		{ mask: '000.000.000-00', maxLength: 11 }, // CPF
-		{ mask: '00.000.000/0000-00' }, // CNPJ
-	]
-
-	const cropOptions = [
-		{ label: 'Soja', value: 'soja' },
-		{ label: 'Milho', value: 'milho' },
-		{ label: 'Algodão', value: 'algodao' },
-	]
-
-	const stateOptions = [
-		{ label: 'São Paulo', value: 'SP' },
-		{ label: 'Minas Gerais', value: 'MG' },
-		{ label: 'Paraná', value: 'PR' },
-	]
-
-	const handleSubmit = () => {
-		if (!selectedState) {
-			setError('Selecione um estado.')
-		} else {
-			setError(undefined)
-			console.log('Form Submitted:', { value, selectedState, selectedCrops })
-		}
+	const onSubmit = (data: FarmerFormValues) => {
+		console.log('Form submitted:', data)
 	}
 
 	return (
 		<div className='flex flex-col w-full p-6'>
-			<h1 className='font-bold text-lg md:text-3xl mb-6'>Novo produtor</h1>
-			<form>
-				<Input label='Nome do produtor' />
-				<MaskedInput
+			<h1 className='font-bold text-lg md:text-3xl mb-6'>Cadastro de Produtor</h1>
+			<form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+				{/* CPF/CNPJ */}
+				<Controller
 					name='cpfCnpj'
-					label='CPF ou CNPJ'
-					mask={cpfCnpjMask}
-					value={value}
-					onAccept={handleAccept}
-					placeholder='Digite o CPF ou CNPJ'
+					control={control}
+					render={({ field }) => (
+						<MaskedInput
+							{...field}
+							name='cpfCnpj'
+							label='CPF ou CNPJ'
+							mask={cpfCnpjMasks}
+							placeholder='Digite o CPF ou CNPJ'
+							error={errors.cpfCnpj?.message}
+						/>
+					)}
 				/>
-				<Select
+
+				{/* Farmer Name */}
+				<Input
+					{...register('farmerName')}
+					label='Nome do Produtor'
+					placeholder='Digite o nome'
+					error={errors.farmerName?.message}
+				/>
+
+				{/* Farm Name */}
+				<Input
+					{...register('farmName')}
+					label='Nome da Fazenda'
+					placeholder='Digite o nome da fazenda'
+					error={errors.farmName?.message}
+				/>
+
+				{/* City */}
+				<Input
+					{...register('city')}
+					label='Cidade'
+					placeholder='Digite a cidade'
+					error={errors.city?.message}
+				/>
+
+				{/* State */}
+				<Controller
 					name='state'
-					label='Estado'
-					options={stateOptions}
-					value={selectedState}
-					onChange={(e) => setSelectedState(e.target.value)}
-					error={error}
+					control={control}
+					render={({ field }) => (
+						<Select
+							{...field}
+							options={brazilianStates}
+							label='Estado'
+							error={errors.state?.message}
+						/>
+					)}
 				/>
-				<CheckboxGroup
-					label='Culturas Plantadas'
-					options={cropOptions}
-					selectedValues={selectedCrops}
-					onChange={setSelectedCrops}
+
+				{/* Total Area */}
+				<Input
+					{...register('totalArea', { valueAsNumber: true })}
+					label='Área Total (hectares)'
+					placeholder='Digite a área total'
+					error={errors.totalArea?.message}
+					type='number'
 				/>
+
+				{/* Arable Area */}
+				<Input
+					{...register('arableArea', { valueAsNumber: true })}
+					label='Área Agricultável (hectares)'
+					placeholder='Digite a área agricultável'
+					error={errors.arableArea?.message}
+					type='number'
+				/>
+
+				{/* Vegetation Area */}
+				<Input
+					{...register('vegetationArea', { valueAsNumber: true })}
+					label='Área de Vegetação (hectares)'
+					placeholder='Digite a área de vegetação'
+					error={errors.vegetationArea?.message}
+					type='number'
+				/>
+
+				{/* Crops */}
+				<Controller
+					name='crops'
+					control={control}
+					render={({ field }) => (
+						<CheckboxGroup
+							{...field}
+							label='Culturas Plantadas'
+							options={[
+								{ label: 'Soja', value: 'soja' },
+								{ label: 'Milho', value: 'milho' },
+								{ label: 'Trigo', value: 'trigo' },
+								{ label: 'Algodão', value: 'algodao' },
+							]}
+							selectedValues={field.value}
+							onChange={(selectedValues) => field.onChange(selectedValues)}
+							error={errors.crops?.message}
+						/>
+					)}
+				/>
+
 				<button
-					type='button'
-					onClick={handleSubmit}
-					className='mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition'
+					type='submit'
+					className='w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition'
 				>
 					Enviar
 				</button>
