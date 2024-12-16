@@ -1,4 +1,3 @@
-.openapi-generator-ignore
 apis/CropsApi.ts
 apis/DashboardApi.ts
 apis/FarmsApi.ts

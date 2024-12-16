@@ -1,5 +1,5 @@
 import { Configuration, DashboardApi } from '@/generated'
-import apiClient from './apiClient'
+import apiClient from '../apiClient'
 import type {
 	FarmsByCropResponse,
 	FarmsByStateResponse,

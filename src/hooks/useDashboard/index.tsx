@@ -6,7 +6,7 @@ import {
 	getLandUseDistribution,
 	getTotalFarmArea,
 	getTotalFarms,
-} from '@/services/dashboardService'
+} from '@/services/dasboardService'
 import type {
 	FarmsByCropResponse,
 	FarmsByStateResponse,

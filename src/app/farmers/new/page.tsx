@@ -8,6 +8,8 @@ import CheckboxGroup from '@/components/CheckboxGroup'
 import Select from '@/components/Select'
 import { FarmerFormValues, farmerSchema } from '@/schemas/FarmerSchema'
 import { brazilianStates, cpfCnpjMasks } from './constants'
+import { useGetCrops } from '@/hooks/useGetCrops'
+import Loader from '@/components/Loader'
 
 export default function NewFarmer() {
 	const {
@@ -30,8 +32,20 @@ export default function NewFarmer() {
 		},
 	})
 
+	const { data: crops, isLoading: loadingCrops } = useGetCrops()
+
+	const cropOptions =
+		crops?.map((crop) => ({
+			label: crop.name,
+			value: crop.name,
+		})) || []
+
 	const onSubmit = (data: FarmerFormValues) => {
 		console.log('Form submitted:', data)
+	}
+
+	if (loadingCrops) {
+		return <Loader />
 	}
 
 	return (
@@ -127,12 +141,7 @@ export default function NewFarmer() {
 						<CheckboxGroup
 							{...field}
 							label='Culturas Plantadas'
-							options={[
-								{ label: 'Soja', value: 'soja' },
-								{ label: 'Milho', value: 'milho' },
-								{ label: 'Trigo', value: 'trigo' },
-								{ label: 'Algodão', value: 'algodao' },
-							]}
+							options={cropOptions}
 							selectedValues={field.value}
 							onChange={(selectedValues) => field.onChange(selectedValues)}
 							error={errors.crops?.message}

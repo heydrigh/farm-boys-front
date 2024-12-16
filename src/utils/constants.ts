@@ -1,4 +1,4 @@
-export const baseApiURL = process.env.NEXT_PUBLIC_BASE_API_URL
+export const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_API_URL
 
 export const DASHBOARD_QUERY_KEY = {
 	FARMS_BY_CROP: ['dashboard', 'farms-by-crop'],
@@ -7,3 +7,5 @@ export const DASHBOARD_QUERY_KEY = {
 	TOTAL_FARM_AREA: ['dashboard', 'total-farm-area'],
 	TOTAL_FARMS: ['dashboard', 'total-farms'],
 }
+
+export const CROPS_QUERY_KEY = ['crops']

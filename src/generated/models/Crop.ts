@@ -13,14 +13,6 @@
  */
 
 import { mapValues } from '../runtime';
-import type { Farm } from './Farm';
-import {
-    FarmFromJSON,
-    FarmFromJSONTyped,
-    FarmToJSON,
-    FarmToJSONTyped,
-} from './Farm';
-
 /**
  * 
  * @export
@@ -39,12 +31,6 @@ export interface Crop {
      * @memberof Crop
      */
     name: string;
-    /**
-     * Farms associated with this crop
-     * @type {Array<Farm>}
-     * @memberof Crop
-     */
-    farms: Array<Farm>;
 }
 
 /**
@@ -53,7 +39,6 @@ export interface Crop {
 export function instanceOfCrop(value: object): value is Crop {
     if (!('id' in value) || value['id'] === undefined) return false;
     if (!('name' in value) || value['name'] === undefined) return false;
-    if (!('farms' in value) || value['farms'] === undefined) return false;
     return true;
 }
 
@@ -69,7 +54,6 @@ export function CropFromJSONTyped(json: any, ignoreDiscriminator: boolean): Crop
         
         'id': json['id'],
         'name': json['name'],
-        'farms': ((json['farms'] as Array<any>).map(FarmFromJSON)),
     };
 }
 
@@ -86,7 +70,6 @@ export function CropToJSONTyped(value?: Crop | null, ignoreDiscriminator: boolea
         
         'id': value['id'],
         'name': value['name'],
-        'farms': ((value['farms'] as Array<any>).map(FarmToJSON)),
     };
 }
 
