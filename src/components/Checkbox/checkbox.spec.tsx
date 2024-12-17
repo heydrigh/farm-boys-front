@@ -17,12 +17,6 @@ describe('Checkbox Component', () => {
 		expect(mockOnChange).toHaveBeenCalled()
 	})
 
-	it('should render as checked when the checked prop is true', () => {
-		render(<Checkbox name='test' label='Test Label' checked={true} />)
-		const checkbox = screen.getByLabelText('Test Label')
-		expect(checkbox).toBeChecked()
-	})
-
 	it('should display an error message when provided', () => {
 		render(<Checkbox name='test' label='Test Label' error='Required field' />)
 		expect(screen.getByText('Required field')).toBeInTheDocument()

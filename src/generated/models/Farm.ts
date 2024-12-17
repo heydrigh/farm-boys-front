@@ -20,13 +20,6 @@ import {
     CropToJSON,
     CropToJSONTyped,
 } from './Crop';
-import type { Producer } from './Producer';
-import {
-    ProducerFromJSON,
-    ProducerFromJSONTyped,
-    ProducerToJSON,
-    ProducerToJSONTyped,
-} from './Producer';
 
 /**
  * 
@@ -77,12 +70,6 @@ export interface Farm {
      */
     vegetationArea: number;
     /**
-     * The producer who owns the farm
-     * @type {Producer}
-     * @memberof Farm
-     */
-    producer: Producer;
-    /**
      * Crops associated with the farm
      * @type {Array<Crop>}
      * @memberof Farm
@@ -101,7 +88,6 @@ export function instanceOfFarm(value: object): value is Farm {
     if (!('totalArea' in value) || value['totalArea'] === undefined) return false;
     if (!('agriculturalArea' in value) || value['agriculturalArea'] === undefined) return false;
     if (!('vegetationArea' in value) || value['vegetationArea'] === undefined) return false;
-    if (!('producer' in value) || value['producer'] === undefined) return false;
     if (!('crops' in value) || value['crops'] === undefined) return false;
     return true;
 }
@@ -123,7 +109,6 @@ export function FarmFromJSONTyped(json: any, ignoreDiscriminator: boolean): Farm
         'totalArea': json['totalArea'],
         'agriculturalArea': json['agriculturalArea'],
         'vegetationArea': json['vegetationArea'],
-        'producer': ProducerFromJSON(json['producer']),
         'crops': ((json['crops'] as Array<any>).map(CropFromJSON)),
     };
 }
@@ -146,7 +131,6 @@ export function FarmToJSONTyped(value?: Farm | null, ignoreDiscriminator: boolea
         'totalArea': value['totalArea'],
         'agriculturalArea': value['agriculturalArea'],
         'vegetationArea': value['vegetationArea'],
-        'producer': ProducerToJSON(value['producer']),
         'crops': ((value['crops'] as Array<any>).map(CropToJSON)),
     };
 }

@@ -1,22 +1,39 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import UserTable from './'
 import { FiEdit2, FiTrash2 } from 'react-icons/fi'
+import { Producer } from '@/generated'
 
 describe('UserTable', () => {
-	const mockData = [
+	const mockData: Producer[] = [
 		{
-			id: 1,
+			id: '1',
 			name: 'João Silva',
-			farm: 'Fazenda Boa Vista',
-			city: 'Ribeirão Preto',
-			state: 'SP',
+			cpfCnpj: '123123',
+			farm: {
+				id: 'farm-1',
+				name: 'Fazenda Boa Vista',
+				city: 'Ribeirão Preto',
+				state: 'SP',
+				totalArea: 100,
+				agriculturalArea: 60,
+				vegetationArea: 40,
+				crops: [],
+			},
 		},
 		{
-			id: 2,
+			id: '2',
 			name: 'Maria Santos',
-			farm: 'Sítio Esperança',
-			city: 'Uberaba',
-			state: 'MG',
+			cpfCnpj: '123123',
+			farm: {
+				id: 'farm-2',
+				name: 'Sítio Esperança',
+				city: 'Uberaba',
+				state: 'MG',
+				totalArea: 200,
+				agriculturalArea: 120,
+				vegetationArea: 80,
+				crops: [],
+			},
 		},
 	]
 
