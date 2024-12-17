@@ -6,12 +6,20 @@ import MaskedInput from '@/components/InputMasked'
 import Input from '@/components/Input'
 import CheckboxGroup from '@/components/CheckboxGroup'
 import Select from '@/components/Select'
+import Loader from '@/components/Loader'
 import { FarmerFormValues, farmerSchema } from '@/schemas/FarmerSchema'
 import { brazilianStates, cpfCnpjMasks } from './constants'
 import { useGetCrops } from '@/hooks/useGetCrops'
-import Loader from '@/components/Loader'
+import { useCreateProducer } from '@/hooks/useCreateProducer'
+import { useRouter } from 'next/navigation'
+import { toast } from 'react-toastify'
+import { useQueryClient } from '@tanstack/react-query'
+import { PRODUCERS_QUERY_KEY } from '@/utils/constants'
+import { CreateProducerDto } from '@/generated'
 
 export default function NewFarmer() {
+	const router = useRouter()
+	const queryClient = useQueryClient()
 	const {
 		control,
 		handleSubmit,
@@ -33,15 +41,40 @@ export default function NewFarmer() {
 	})
 
 	const { data: crops, isLoading: loadingCrops } = useGetCrops()
+	const { mutate: createProducer, isPending: creatingProducer } = useCreateProducer({
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: PRODUCERS_QUERY_KEY })
+			router.push('/farmers')
+		},
+		onError: () => {
+			toast.error('Falha ao criar produtor, tente novamente mais tarde')
+		},
+	})
 
 	const cropOptions =
 		crops?.map((crop) => ({
 			label: crop.name,
-			value: crop.name,
+			value: crop.id,
 		})) || []
 
 	const onSubmit = (data: FarmerFormValues) => {
-		console.log('Form submitted:', data)
+		const unmaskedCpfCnpj = data.cpfCnpj.replace(/\D/g, '')
+
+		const createProducerDto = {
+			cpfCnpj: unmaskedCpfCnpj,
+			name: data.farmerName,
+			farm: {
+				name: data.farmName,
+				city: data.city,
+				state: data.state,
+				totalArea: data.totalArea,
+				agriculturalArea: data.arableArea,
+				vegetationArea: data.vegetationArea,
+				cropIds: data.crops,
+			},
+		} satisfies CreateProducerDto
+
+		createProducer({ createProducerDto })
 	}
 
 	if (loadingCrops) {
@@ -152,8 +185,9 @@ export default function NewFarmer() {
 				<button
 					type='submit'
 					className='w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition'
+					disabled={creatingProducer}
 				>
-					Enviar
+					{creatingProducer ? 'Enviando...' : 'Enviar'}
 				</button>
 			</form>
 		</div>

@@ -12,5 +12,4 @@ export * from './Producer';
 export * from './TotalFarmAreaResponse';
 export * from './TotalFarmsResponse';
 export * from './UpdateCropDto';
-export * from './UpdateFarmDto';
 export * from './UpdateProducerDto';

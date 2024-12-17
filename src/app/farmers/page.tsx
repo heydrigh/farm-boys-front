@@ -10,6 +10,7 @@ import { useGetProducers } from '@/hooks/useGetProducers'
 import { useDeleteProducer } from '@/hooks/useDeleteProducer'
 import { useQueryClient } from '@tanstack/react-query'
 import { PRODUCERS_QUERY_KEY } from '@/utils/constants'
+import { toast } from 'react-toastify'
 
 export default function Farmers() {
 	const router = useRouter()
@@ -18,6 +19,10 @@ export default function Farmers() {
 	const { mutate: deleteProducer } = useDeleteProducer({
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: PRODUCERS_QUERY_KEY })
+			toast.success('Produtor deletado com sucesso')
+		},
+		onError: () => {
+			toast.error('Falha ao deletar produtor')
 		},
 	})
 

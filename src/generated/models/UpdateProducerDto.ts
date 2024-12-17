@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { CreateFarmDto } from './CreateFarmDto';
+import {
+    CreateFarmDtoFromJSON,
+    CreateFarmDtoFromJSONTyped,
+    CreateFarmDtoToJSON,
+    CreateFarmDtoToJSONTyped,
+} from './CreateFarmDto';
+
 /**
  * 
  * @export
@@ -31,6 +39,12 @@ export interface UpdateProducerDto {
      * @memberof UpdateProducerDto
      */
     name?: string;
+    /**
+     * Farm associated with the producer
+     * @type {CreateFarmDto}
+     * @memberof UpdateProducerDto
+     */
+    farm?: CreateFarmDto;
 }
 
 /**
@@ -52,6 +66,7 @@ export function UpdateProducerDtoFromJSONTyped(json: any, ignoreDiscriminator: b
         
         'cpfCnpj': json['cpfCnpj'] == null ? undefined : json['cpfCnpj'],
         'name': json['name'] == null ? undefined : json['name'],
+        'farm': json['farm'] == null ? undefined : CreateFarmDtoFromJSON(json['farm']),
     };
 }
 
@@ -68,6 +83,7 @@ export function UpdateProducerDtoToJSONTyped(value?: UpdateProducerDto | null, i
         
         'cpfCnpj': value['cpfCnpj'],
         'name': value['name'],
+        'farm': CreateFarmDtoToJSON(value['farm']),
     };
 }
 

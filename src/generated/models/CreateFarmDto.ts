@@ -56,12 +56,6 @@ export interface CreateFarmDto {
      */
     vegetationArea: number;
     /**
-     * ID of the producer who owns the farm
-     * @type {string}
-     * @memberof CreateFarmDto
-     */
-    producerId: string;
-    /**
      * List of crop IDs associated with the farm
      * @type {Array<string>}
      * @memberof CreateFarmDto
@@ -79,7 +73,6 @@ export function instanceOfCreateFarmDto(value: object): value is CreateFarmDto {
     if (!('totalArea' in value) || value['totalArea'] === undefined) return false;
     if (!('agriculturalArea' in value) || value['agriculturalArea'] === undefined) return false;
     if (!('vegetationArea' in value) || value['vegetationArea'] === undefined) return false;
-    if (!('producerId' in value) || value['producerId'] === undefined) return false;
     if (!('cropIds' in value) || value['cropIds'] === undefined) return false;
     return true;
 }
@@ -100,7 +93,6 @@ export function CreateFarmDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'totalArea': json['totalArea'],
         'agriculturalArea': json['agriculturalArea'],
         'vegetationArea': json['vegetationArea'],
-        'producerId': json['producerId'],
         'cropIds': json['cropIds'],
     };
 }
@@ -122,7 +114,6 @@ export function CreateFarmDtoToJSONTyped(value?: CreateFarmDto | null, ignoreDis
         'totalArea': value['totalArea'],
         'agriculturalArea': value['agriculturalArea'],
         'vegetationArea': value['vegetationArea'],
-        'producerId': value['producerId'],
         'cropIds': value['cropIds'],
     };
 }

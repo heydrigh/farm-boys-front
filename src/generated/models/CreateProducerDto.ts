@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { CreateFarmDto } from './CreateFarmDto';
+import {
+    CreateFarmDtoFromJSON,
+    CreateFarmDtoFromJSONTyped,
+    CreateFarmDtoToJSON,
+    CreateFarmDtoToJSONTyped,
+} from './CreateFarmDto';
+
 /**
  * 
  * @export
@@ -31,6 +39,12 @@ export interface CreateProducerDto {
      * @memberof CreateProducerDto
      */
     name: string;
+    /**
+     * Farm associated with the producer
+     * @type {CreateFarmDto}
+     * @memberof CreateProducerDto
+     */
+    farm: CreateFarmDto;
 }
 
 /**
@@ -39,6 +53,7 @@ export interface CreateProducerDto {
 export function instanceOfCreateProducerDto(value: object): value is CreateProducerDto {
     if (!('cpfCnpj' in value) || value['cpfCnpj'] === undefined) return false;
     if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('farm' in value) || value['farm'] === undefined) return false;
     return true;
 }
 
@@ -54,6 +69,7 @@ export function CreateProducerDtoFromJSONTyped(json: any, ignoreDiscriminator: b
         
         'cpfCnpj': json['cpfCnpj'],
         'name': json['name'],
+        'farm': CreateFarmDtoFromJSON(json['farm']),
     };
 }
 
@@ -70,6 +86,7 @@ export function CreateProducerDtoToJSONTyped(value?: CreateProducerDto | null, i
         
         'cpfCnpj': value['cpfCnpj'],
         'name': value['name'],
+        'farm': CreateFarmDtoToJSON(value['farm']),
     };
 }
 

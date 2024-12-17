@@ -1,6 +1,5 @@
 apis/CropsApi.ts
 apis/DashboardApi.ts
-apis/FarmsApi.ts
 apis/ProducersApi.ts
 apis/index.ts
 index.ts
@@ -16,7 +15,6 @@ models/Producer.ts
 models/TotalFarmAreaResponse.ts
 models/TotalFarmsResponse.ts
 models/UpdateCropDto.ts
-models/UpdateFarmDto.ts
 models/UpdateProducerDto.ts
 models/index.ts
 runtime.ts
